@@ -124,6 +124,7 @@ app.get("/freeget", async (req, res) => {
   res.send("this is free!"); //req.user stores the user session that has been authenticated
 });
 
+console.log(process.env.API_DOMAIN);
 //Start Web Service
 app.listen(process.env.PORT || apiPort, () => {
   console.log(
