@@ -64,10 +64,6 @@ require("./passportFirestore")(passport);
 
 app.use(express.static(path.join(__dirname, "build")));
 
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
 //Routes -------------------------------------------------------------
 app.post("/login", async (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
@@ -77,7 +73,7 @@ app.post("/login", async (req, res, next) => {
       req.logIn(user, (err) => {
         if (err) throw err;
         res.send("Successfully Authenticated");
-        console.log("Authernticated User (stored to session) : ", req.user);
+        console.log("Authernticated User (stored to session) ");
       });
     }
   })(req, res, next);
@@ -118,6 +114,10 @@ app.post("/register", async (req, res) => {
 app.get("/getUser", async (req, res) => {
   //res.json(req.session.user); //use this while passport is broken. or deploy same site with heroku
   res.send(req.user); //req.user stores the user session that has been authenticated
+});
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 app.get("/freeget", async (req, res) => {
