@@ -3,6 +3,7 @@ const admin = require("firebase-admin");
 // const serviceAccount = require("./dev-test-25bc6-firebase-adminsdk-hxe8h-af23768f71.json");
 const express = require("express");
 const cors = require("cors");
+const axios = require("axios");
 const passport = require("passport");
 const passportLocal = require("passport-local").Strategy;
 const cookieParser = require("cookie-parser");
@@ -116,12 +117,37 @@ app.get("/getUser", async (req, res) => {
   res.send(req.user); //req.user stores the user session that has been authenticated
 });
 
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+app.get("/getChartData", async (req, res) => {
+  res.send({
+    datasetname: "this is le dataseto",
+    labels: ["A", "B", "C"],
+    data: [1, 2, 3],
+  }); //req.user stores the user session that has been authenticated
+});
+
+app.get("/getInsult", async (req, res) => {
+  await axios({
+    method: "GET",
+    url: "https://insult.mattbas.org/api/insult",
+  }).then(async (result) => {
+    res.send(result.data);
+  });
+});
+
+app.get("/getMapPosition", async (req, res) => {
+  res.send({
+    zoom: 12,
+    position: [14.5386049, 120.9812023],
+    label: "Hello World",
+  }); //req.user stores the user session that has been authenticated
 });
 
 app.get("/freeget", async (req, res) => {
   res.send("this is free!"); //req.user stores the user session that has been authenticated
+});
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 console.log(process.env.API_DOMAIN);
